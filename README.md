@@ -1,6 +1,8 @@
 # Tic-Tac-Toe
 The Odin Project's Javascript [Tic Tac Toe](https://www.theodinproject.com/paths/full-stack-javascript/courses/javascript/lessons/tic-tac-toe)
 
+[Live preview](https://homeworkmon.github.io/Tic-Tac-Toe/)
+
 Built using minimax recursive function to simulate ai player at three levels of difficulty!
 
 Inspiration from [The Coding Train's](https://www.youtube.com/watch?v=trKjYdBASyQ) explanation of minimax function (so helpful!!) as well as the implementation of difficulty levels inspired by [@Pety99](https://github.com/Pety99/tic-tac-toe) & [Vodjnov](https://github.com/vdojnov/Superhero-Tic-Tac-Toe) (thank you!!)
