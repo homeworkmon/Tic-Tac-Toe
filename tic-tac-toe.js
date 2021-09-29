@@ -63,7 +63,6 @@ const playGame = (() => {
 
     const setSign = (sign) => {
         if (sign=='o') {
-            console.log('executing setSign');
             _humanPlayer.sign = sign;
             _aiPlayer.sign='x';
             aiTurn();
@@ -71,9 +70,11 @@ const playGame = (() => {
     }
 
     const playerTurn = (index) => {
-        console.log('executing playerTurn');
-        gameboard.insertPosition(index, _humanPlayer.sign);
-        aiTurn();
+        let emptys = gameboard.emptys()
+        if (emptys.includes(parseInt(index))) {
+            gameboard.insertPosition(index, _humanPlayer.sign);
+            aiTurn();
+        }
     }
 
     const aiTurn = () => {
@@ -83,14 +84,11 @@ const playGame = (() => {
 
         //if it falls under threshold of difficulty use ai logic otherwise use random #
         if (randomValue <= difficulty) {
-            console.log('executing aiLogic');
             aiLogic();
         }
         else {
             let emptys = gameboard.emptys();
             let randomPosition = emptys[Math.floor(Math.random() * emptys.length)];
-            console.log('executing random');
-            console.log(`randomPosition: ${randomPosition}`)
             setTimeout(() => {
                 //call real gameboard function to insert position to true board
                 gameboard.insertPosition(randomPosition, _aiPlayer.sign);
@@ -278,6 +276,4 @@ const displayController = (() => {
         setPlayerPick,
         showModal
     }
-
-
 })();
