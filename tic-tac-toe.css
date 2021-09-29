@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+html, body {
+    height: 100%;
+    width: 100%;
+}
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+* {
+    font-family:'Fredoka One', cursive;
+}
+#container {
+    width: 80%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+#container > h1 {
+    position: absolute;
+    top: 6%;
+    letter-spacing: 3px;
+}
+.form-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 55vh;
+    margin-bottom: 3em;
+}
+/*ideally I wanted to style the highlight colour of the select option but
+that is not available in classic HTML without using other libraries 
+or changing the element to ul/li format :(*/
+select {
+    border: none;
+    background-color: white;
+}
+#board {
+    overflow: hidden;
+    width: 55vh;
+    height: 55vh;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+}
+#board>div:nth-child(-n+3) {
+    border-top: none;
+}
+#board>div:nth-child(3n) {
+    border-right: none;
+}
+#board>div:nth-child(3n-2) {
+    border-left: none;
+}
+#board>div:nth-child(n+7) {
+    border-bottom: none;
+}
+.square {
+    border: 2.5px solid;
+    border-radius: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.square {
+    font-size: 3.5em;
+}
+.modal {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.modal-card {
+    position: relative;
+    margin: auto;
+    margin-top: 10%;
+    width: 20%;
+    height: 25%;
+    display: flex;
+    flex-direction: column;
+    border: solid;
+    justify-content: center;
+    background-color: white;
+    color: black;
+    padding-bottom: 10px;
+}
+.modal-header {
+    align-self: flex-start;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 1px;
+    font-size: 1.4em;
+}
+.play-again {
+    border: none;
+    padding: 7px;
+    border-radius: 5px;
+    background-color: black;
+    color: white;
+}
+.close-modal {
+    position: absolute;
+    padding: 0px 7px;
+    right: 0;
+    top: 0;
+    height: auto;
+}
+.results {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 1px;
+}
