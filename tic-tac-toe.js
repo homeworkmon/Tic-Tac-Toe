@@ -236,7 +236,7 @@ const displayController = (() => {
     _symbolForm.addEventListener('change', setPlayerPick);
 
     const _difficultyForm = document.querySelector('.difficulty-form');
-    _difficultyForm.addEventListener('change', gameboard.reset());
+    _difficultyForm.addEventListener('change', () => gameboard.reset());
 
     const _modal = document.querySelector('.modal');
     const displayResult = document.querySelector('.results-p');
