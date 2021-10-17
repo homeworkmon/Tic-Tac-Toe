@@ -2,7 +2,7 @@ const gameboard = (() => {
     let _positions = new Array(9);
     //initialize array values with empty string so that it doesn't mess with checker logic
     _positions.fill('');
-    const squares = document.querySelectorAll(".square");
+    const _squares = document.querySelectorAll(".square");
 
     const _fill = () => {
         let winCheck = (playGame.winChecker(gameboard.getPosition()));
@@ -11,7 +11,7 @@ const gameboard = (() => {
         }
         for (let i= 0; i < _positions.length; i++) {
             if (_positions[i] !== '') {
-                squares[i].textContent = _positions[i];
+                _squares[i].textContent = _positions[i];
             }
         }
     }
@@ -26,7 +26,7 @@ const gameboard = (() => {
     const reset = () => {
         for (i=0;i<_positions.length;i++) {
             _positions.splice(i, 1, '');
-            squares[i].textContent = '';
+            _squares[i].textContent = '';
         }
     }
 
@@ -43,7 +43,6 @@ const gameboard = (() => {
     }
 
     return { 
-        squares, 
         insertPosition, 
         getPosition, 
         reset,
@@ -53,17 +52,18 @@ const gameboard = (() => {
 
 const Player = (sign) => {
     this.sign = sign;
-
     return {sign};
 };
 
 const playGame = (() => {
-    const _humanPlayer = Player('x');
+    const humanPlayer = Player('x');
     const _aiPlayer = Player('o');
 
     const setSign = (sign) => {
+        console.log('executing setSign');
         if (sign=='o') {
-            _humanPlayer.sign = sign;
+            console.log('sign is o');
+            humanPlayer.sign = sign;
             _aiPlayer.sign='x';
             aiTurn();
         }
@@ -72,12 +72,13 @@ const playGame = (() => {
     const playerTurn = (index) => {
         let emptys = gameboard.emptys()
         if (emptys.includes(parseInt(index))) {
-            gameboard.insertPosition(index, _humanPlayer.sign);
+            gameboard.insertPosition(index, humanPlayer.sign);
             aiTurn();
         }
     }
 
     const aiTurn = () => {
+        displayController.removeClicks();
         let difficulty = document.querySelector('#difficulty').value;
         //pick random number between 0 and 100
         const randomValue = Math.floor(Math.random() * (100 + 1));
@@ -92,8 +93,11 @@ const playGame = (() => {
             setTimeout(() => {
                 //call real gameboard function to insert position to true board
                 gameboard.insertPosition(randomPosition, _aiPlayer.sign);
-            }, 200);
+            }, 2000);
         }
+        setTimeout(() => {
+            displayController.listenClicks();
+        }, 2500);
     }
 
     const aiLogic = () => {
@@ -115,7 +119,7 @@ const playGame = (() => {
         setTimeout(() => {
             //call real gameboard function to insert position to true board
             gameboard.insertPosition(move, _aiPlayer.sign);
-        }, 200);
+        }, 2000);
     }
 
     //save scores as opposite from human values
@@ -148,7 +152,7 @@ const playGame = (() => {
             let bestScore = +Infinity;
             for (let i=0;i<array.length;i++) {
                 if (array[i] === '') {
-                    array.splice(i, 1, _humanPlayer.sign);
+                    array.splice(i, 1, humanPlayer.sign);
                     let score = _minimax(array, depth+1, true);
                     array.splice(i, 1, '');
                     bestScore = Math.min(score, bestScore);
@@ -203,7 +207,7 @@ const playGame = (() => {
     const winChecker = (array) => {
         let win = (_checkRow(array) || _checkColumn(array) || _checkDiagonal(array));
         if (win) {
-            if (_humanPlayer.sign == win) {
+            if (humanPlayer.sign == win) {
                 return 'win';
             }
             else if (_aiPlayer.sign == win) {
@@ -220,7 +224,8 @@ const playGame = (() => {
         setSign,
         playerTurn,
         winChecker,
-        difficulty
+        difficulty,
+        humanPlayer
     }
 
 })();
@@ -255,16 +260,28 @@ const displayController = (() => {
         }, 450);
     }
 
-    gameboard.squares.forEach(square => {
-        square.addEventListener('click', (e) => {
-            let index = e.target.id;
-            playGame.playerTurn(index);
-        });
-    });
+    const triggerPlayerTurn = function(e) {
+        playGame.playerTurn(e.target.id);
+    }
+
+    const board = document.getElementById('board');
+    const listenClicks = () => {
+        console.log('executing listen clicks');
+        board.addEventListener('click', triggerPlayerTurn);
+    }
+
+    const removeClicks = () => {
+        console.log('executing remove clicks');
+        board.removeEventListener('click', triggerPlayerTurn);
+    }
+
+    window.onload = listenClicks();
 
     const _closers = document.querySelectorAll('.close');
     const _closeModal = () => {
         _modal.style.display = 'none';
+        gameboard.reset();
+        playGame.setSign(playGame.humanPlayer.sign);
     }
     _closers.forEach(close => {
         close.addEventListener('click', () => {
@@ -274,6 +291,8 @@ const displayController = (() => {
 
     return { 
         setPlayerPick,
-        showModal
+        showModal,
+        listenClicks,
+        removeClicks
     }
 })();
